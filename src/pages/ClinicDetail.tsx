@@ -8,6 +8,7 @@ const SERVICES = [
     desc: 'Bao gồm 7 bệnh phổ biến, sổ giun và khám tổng quát.',
     price: '500.000đ',
     unit: '/lần',
+    image: 'https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=400&q=80',
   },
   {
     icon: 'content_cut',
@@ -15,6 +16,7 @@ const SERVICES = [
     desc: 'Tắm, sấy, cắt tỉa theo yêu cầu, vệ sinh tai móng.',
     price: '350.000đ',
     unit: '/từ',
+    image: 'https://images.unsplash.com/photo-1560807707-8cc77767d783?w=400&q=80',
   },
   {
     icon: 'hotel',
@@ -22,6 +24,7 @@ const SERVICES = [
     desc: 'Phòng riêng, điều hòa 24/7, camera giám sát.',
     price: '200.000đ',
     unit: '/ngày',
+    image: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&q=80',
   },
   {
     icon: 'medical_services',
@@ -29,6 +32,7 @@ const SERVICES = [
     desc: 'Khám sức khỏe định kỳ, tư vấn dinh dưỡng.',
     price: '150.000đ',
     unit: '/lần',
+    image: 'https://images.unsplash.com/photo-1576201836106-db1758fd1c97?w=400&q=80',
   },
   {
     icon: 'biotech',
@@ -36,6 +40,7 @@ const SERVICES = [
     desc: 'Phân tích công thức máu, sinh hóa toàn diện.',
     price: '300.000đ',
     unit: '/lần',
+    image: 'https://images.unsplash.com/photo-1581595220892-b0739db3ba8c?w=400&q=80',
   },
 ];
 
@@ -123,6 +128,15 @@ export default function ClinicDetail() {
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [isFavorited, setIsFavorited] = useState(false);
   const [reviewFilter, setReviewFilter] = useState('Tất cả');
+  const [selectedServices, setSelectedServices] = useState<string[]>(['Khám tổng quát']);
+
+  const toggleService = (serviceTitle: string) => {
+    setSelectedServices(prev => 
+      prev.includes(serviceTitle) 
+        ? prev.filter(s => s !== serviceTitle)
+        : [...prev, serviceTitle]
+    );
+  };
 
   const today = new Date();
   const dayName = today.toLocaleDateString('vi-VN', { weekday: 'long' });
@@ -323,20 +337,31 @@ export default function ClinicDetail() {
                 {SERVICES.map((svc) => (
                   <div
                     key={svc.title}
-                    className="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#1a2b4c]/5 dark:hover:bg-teal-900/10 transition-colors group cursor-pointer border border-transparent hover:border-[#1a2b4c]/20"
+                    className="flex items-center gap-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#1a2b4c]/5 dark:hover:bg-teal-900/10 transition-colors group cursor-pointer border border-transparent hover:border-[#1a2b4c]/20"
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 bg-teal-50 dark:bg-teal-900/30 rounded-lg text-teal-600 dark:text-teal-400 shadow-sm">
-                        <span className="material-symbols-outlined">{svc.icon}</span>
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm group-hover:text-[#1a2b4c] dark:group-hover:text-teal-400 transition-colors">
-                          {svc.title}
-                        </h4>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-1">{svc.desc}</p>
+                    {/* Service Image */}
+                    <div className="relative w-20 h-20 rounded-lg overflow-hidden shrink-0 shadow-sm">
+                      <img 
+                        src={svc.image} 
+                        alt={svc.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                      <div className="absolute bottom-1 right-1 p-1.5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-md">
+                        <span className="material-symbols-outlined text-teal-600 dark:text-teal-400 text-sm">{svc.icon}</span>
                       </div>
                     </div>
-                    <div className="text-right shrink-0 ml-4">
+                    
+                    {/* Service Info */}
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm group-hover:text-[#1a2b4c] dark:group-hover:text-teal-400 transition-colors">
+                        {svc.title}
+                      </h4>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-1">{svc.desc}</p>
+                    </div>
+                    
+                    {/* Price */}
+                    <div className="text-right shrink-0">
                       <span className="block font-bold text-slate-900 dark:text-slate-100 text-sm">{svc.price}</span>
                       <span className="text-xs text-slate-400">{svc.unit}</span>
                     </div>
@@ -498,12 +523,39 @@ export default function ClinicDetail() {
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 block">
                     Chọn dịch vụ
                   </label>
-                  <select className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300 outline-none focus:ring-1 focus:ring-[#1a2b4c]">
-                    <option>Khám tổng quát</option>
-                    <option>Tiêm phòng trọn gói</option>
-                    <option>Spa & Grooming</option>
-                    <option>Lưu trú khách sạn</option>
-                  </select>
+                  <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 max-h-[240px] overflow-y-auto">
+                    {SERVICES.map((svc) => (
+                      <label
+                        key={svc.title}
+                        className="flex items-start gap-3 p-2 rounded-lg hover:bg-white dark:hover:bg-slate-700 cursor-pointer transition-colors group"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedServices.includes(svc.title)}
+                          onChange={() => toggleService(svc.title)}
+                          className="mt-1 w-4 h-4 rounded border-slate-300 text-[#1a2b4c] focus:ring-[#1a2b4c] cursor-pointer"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200 group-hover:text-[#1a2b4c] dark:group-hover:text-teal-400 transition-colors">
+                              {svc.title}
+                            </span>
+                            <span className="text-xs font-bold text-slate-900 dark:text-slate-100 shrink-0">
+                              {svc.price}
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1">
+                            {svc.desc}
+                          </p>
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                  {selectedServices.length > 0 && (
+                    <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                      Đã chọn: {selectedServices.length} dịch vụ
+                    </div>
+                  )}
                 </div>
 
                 {/* Date */}
