@@ -136,9 +136,12 @@ export default function BookingHistory() {
         <h1 className="text-3xl font-bold tracking-tight">Lịch đặt dịch vụ</h1>
         <p className="text-slate-500 mt-1">Quản lý tất cả lịch hẹn và dịch vụ thú cưng của bạn.</p>
       </div>
+      <Link
+                                  to="/search">
         <button className="flex items-center gap-2 bg-[#122143] text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-[#122143]/20 hover:-translate-y-0.5 transition-all">
           <Plus className="w-5 h-5" /> Đặt dịch vụ mới
         </button>
+      </Link>
       </div>
 
       {/* Tabs */}

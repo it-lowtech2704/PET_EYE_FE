@@ -92,7 +92,7 @@ export default function Payment() {
 
                     <div className="flex flex-col gap-3">
                         <Link
-                            to="/bookings"
+                            to="/profile/bookings"
                             className="w-full py-3 bg-[#1a2b4c] text-white font-bold rounded-xl hover:bg-[#243d6b] transition-colors shadow-lg flex items-center justify-center gap-2"
                         >
                             <span className="material-symbols-outlined text-base">calendar_month</span>
