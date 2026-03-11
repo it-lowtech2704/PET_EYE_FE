@@ -15,10 +15,11 @@ import ShopLayout from './pages/shop/ShopLayout';
 import ShopDashboard from './pages/shop/ShopDashboard';
 import ShopBookings from './pages/shop/ShopBookings';
 import ShopServices from './pages/shop/ShopServices';
-import ShopOrders from './pages/shop/ShopOrders';
 import ShopCustomers from './pages/shop/ShopCustomers';
 import ShopProfile from './pages/shop/ShopProfile';
 import ShopReports from './pages/shop/ShopReports';
+import ShopCamera from './pages/shop/ShopCamera';
+import ShopMessages from './pages/shop/ShopMessages';
 import Profile, { ProfileLayout } from './pages/Profile';
 import OrderHistory from './pages/OrderHistory';
 import BookingHistory from './pages/BookingHistory';
@@ -78,8 +79,9 @@ function AppLayout() {
             <Route path="dashboard" element={<ShopDashboard />} />
             <Route path="bookings" element={<ShopBookings />} />
             <Route path="services" element={<ShopServices />} />
-            <Route path="orders" element={<ShopOrders />} />
             <Route path="customers" element={<ShopCustomers />} />
+            <Route path="camera" element={<ShopCamera />} />
+            <Route path="messages" element={<ShopMessages />} />
             <Route path="reports" element={<ShopReports />} />
             <Route path="profile" element={<ShopProfile />} />
           </Route>

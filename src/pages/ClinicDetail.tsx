@@ -374,7 +374,7 @@ export default function ClinicDetail() {
             </section>
 
             {/* Live Camera Promo */}
-            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 text-white p-8">
+            {/* <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 to-slate-800 text-white p-8">
               <div
                 className="absolute top-0 right-0 w-1/2 h-full opacity-20 bg-cover bg-no-repeat bg-center rounded-2xl"
                 style={{
@@ -398,7 +398,7 @@ export default function ClinicDetail() {
                   Tải App Ngay
                 </button>
               </div>
-            </section>
+            </section> */}
 
             {/* Reviews */}
             <section>
