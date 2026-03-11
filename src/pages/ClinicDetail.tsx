@@ -6,6 +6,11 @@ const SERVICES = [
     icon: 'vaccines',
     title: 'Tiêm phòng trọn gói',
     desc: 'Bao gồm 7 bệnh phổ biến, sổ giun và khám tổng quát.',
+    details: [
+      'Tiêm phòng phòng 7 bệnh truyền nhiễm: parvo, distemper, ho cũi, leptospirosis, parainfluenza, coronavirus, và viêm gan.',
+      'Kèm theo sổ giun định kỳ và hướng dẫn chăm sóc sau tiêm.',
+      'Tư vấn lịch tiêm tiếp theo và theo dõi phản ứng sau tiêm trong 30 phút.',
+    ],
     price: '500.000đ',
     unit: '/lần',
     image: 'https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=400&q=80',
@@ -14,6 +19,11 @@ const SERVICES = [
     icon: 'content_cut',
     title: 'Spa & Cắt tỉa lông',
     desc: 'Tắm, sấy, cắt tỉa theo yêu cầu, vệ sinh tai móng.',
+    details: [
+      'Gói cơ bản gồm: tắm, sấy, cắt móng, vệ sinh tai, và xịt dưỡng lông.',
+      'Tùy chọn gói cao cấp: massage thư giãn, cắt tỉa tạo kiểu và thải lông.',
+      'Sử dụng sản phẩm an toàn cho da và lông thú cưng, phù hợp với thú cưng nhạy cảm.',
+    ],
     price: '350.000đ',
     unit: '/từ',
     image: 'https://images.unsplash.com/photo-1560807707-8cc77767d783?w=400&q=80',
@@ -22,6 +32,11 @@ const SERVICES = [
     icon: 'hotel',
     title: 'Lưu trú khách sạn thú cưng',
     desc: 'Phòng riêng, điều hòa 24/7, camera giám sát.',
+    details: [
+      'Phòng riêng với điều hòa, giường êm và chăn ấm.',
+      'Giám sát 24/7 qua camera, nhân viên chăm sóc thay phiên theo dõi.',
+      'Bao gồm 2 bữa ăn, cho ăn theo thực đơn hoặc theo yêu cầu chủ.',
+    ],
     price: '200.000đ',
     unit: '/ngày',
     image: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&q=80',
@@ -30,6 +45,11 @@ const SERVICES = [
     icon: 'medical_services',
     title: 'Khám tổng quát',
     desc: 'Khám sức khỏe định kỳ, tư vấn dinh dưỡng.',
+    details: [
+      'Kiểm tra tổng quát: tai, mắt, răng, da, tim mạch và hô hấp.',
+      'Tư vấn chế độ dinh dưỡng phù hợp theo độ tuổi và giống loài.',
+      'Đề xuất các xét nghiệm cần thiết nếu phát hiện dấu hiệu bất thường.',
+    ],
     price: '150.000đ',
     unit: '/lần',
     image: 'https://images.unsplash.com/photo-1576201836106-db1758fd1c97?w=400&q=80',
@@ -38,6 +58,11 @@ const SERVICES = [
     icon: 'biotech',
     title: 'Xét nghiệm máu',
     desc: 'Phân tích công thức máu, sinh hóa toàn diện.',
+    details: [
+      'Xét nghiệm công thức máu (CBC) và sinh hóa máu cơ bản.',
+      'Phát hiện sớm các bệnh về gan, thận và rối loạn chuyển hóa.',
+      'Tư vấn kết quả cùng bác sĩ chuyên khoa ngay trong ngày.',
+    ],
     price: '300.000đ',
     unit: '/lần',
     image: 'https://images.unsplash.com/photo-1581595220892-b0739db3ba8c?w=400&q=80',
@@ -334,39 +359,65 @@ export default function ClinicDetail() {
             <section className="border-b border-slate-200 dark:border-slate-800 pb-8">
               <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-5">Dịch vụ nổi bật</h2>
               <div className="flex flex-col gap-3">
-                {SERVICES.map((svc) => (
-                  <div
-                    key={svc.title}
-                    className="flex items-center gap-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#1a2b4c]/5 dark:hover:bg-teal-900/10 transition-colors group cursor-pointer border border-transparent hover:border-[#1a2b4c]/20"
-                  >
-                    {/* Service Image */}
-                    <div className="relative w-20 h-20 rounded-lg overflow-hidden shrink-0 shadow-sm">
-                      <img
-                        src={svc.image}
-                        alt={svc.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                      <div className="absolute bottom-1 right-1 p-1.5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-md">
-                        <span className="material-symbols-outlined text-teal-600 dark:text-teal-400 text-sm">{svc.icon}</span>
+                {SERVICES.map((svc) => {
+                  const isSelected = selectedServices.includes(svc.title);
+
+                  return (
+                    <div key={svc.title}>
+                      <div
+                        onClick={() => toggleService(svc.title)}
+                        className={`flex items-center gap-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#1a2b4c]/5 dark:hover:bg-teal-900/10 transition-colors group cursor-pointer border ${
+                          isSelected
+                            ? 'border-[#1a2b4c]/40 bg-[#1a2b4c]/10 dark:bg-teal-900/40'
+                            : 'border-transparent hover:border-[#1a2b4c]/20'
+                        }`}
+                      >
+                        {/* Service Image */}
+                        <div className="relative w-20 h-20 rounded-lg overflow-hidden shrink-0 shadow-sm">
+                          <img
+                            src={svc.image}
+                            alt={svc.title}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                          <div className="absolute bottom-1 right-1 p-1.5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-md">
+                            <span className="material-symbols-outlined text-teal-600 dark:text-teal-400 text-sm">
+                              {svc.icon}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Service Info */}
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm group-hover:text-[#1a2b4c] dark:group-hover:text-teal-400 transition-colors">
+                            {svc.title}
+                          </h4>
+                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-1">{svc.desc}</p>
+                        </div>
+
+                        {/* Price */}
+                        <div className="text-right shrink-0">
+                          <span className="block font-bold text-slate-900 dark:text-slate-100 text-sm">{svc.price}</span>
+                          <span className="text-xs text-slate-400">{svc.unit}</span>
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Service Info */}
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm group-hover:text-[#1a2b4c] dark:group-hover:text-teal-400 transition-colors">
-                        {svc.title}
-                      </h4>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-1">{svc.desc}</p>
+                      {isSelected && (
+                        <div className="mt-2 px-4 pb-4 text-sm text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-semibold text-slate-900 dark:text-slate-100">Chi tiết dịch vụ</span>
+                            <span className="text-xs text-slate-500 dark:text-slate-400">Nhấn để ẩn</span>
+                          </div>
+                          <ul className="list-disc pl-5 space-y-1">
+                            {svc.details.map((detail) => (
+                              <li key={detail}>{detail}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
-
-                    {/* Price */}
-                    <div className="text-right shrink-0">
-                      <span className="block font-bold text-slate-900 dark:text-slate-100 text-sm">{svc.price}</span>
-                      <span className="text-xs text-slate-400">{svc.unit}</span>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
               <button className="w-full mt-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-sm">
                 Xem toàn bộ bảng giá
