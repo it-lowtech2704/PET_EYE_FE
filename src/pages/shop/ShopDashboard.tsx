@@ -1,170 +1,232 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Store, Calendar, Package, DollarSign, Users, TrendingUp, Clock, CheckCircle, ArrowUpRight, ArrowRight } from 'lucide-react';
+import { 
+    Store, Calendar, Package, DollarSign, Users, TrendingUp, Clock, 
+    CheckCircle, ArrowUpRight, ArrowRight, MoreHorizontal, Bell,
+    ArrowDownRight, CreditCard, Video, ChevronRight, MessageCircle, Settings,
+    Camera
+} from 'lucide-react';
+import { 
+    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, 
+    ResponsiveContainer, BarChart, Bar, Cell, PieChart, Pie
+} from 'recharts';
 import { useAuth } from '../../contexts/AuthContext';
+
+const REVENUE_DATA = [
+  { name: 'T2', value: 2400 },
+  { name: 'T3', value: 1398 },
+  { name: 'T4', value: 9800 },
+  { name: 'T5', value: 3908 },
+  { name: 'T6', value: 4800 },
+  { name: 'T7', value: 3800 },
+  { name: 'CN', value: 4300 },
+];
+
+const SERVICE_DATA = [
+  { name: 'Lưu trú', value: 400, color: '#1a2b4c' },
+  { name: 'Spa', value: 300, color: '#3b82f6' },
+  { name: 'Khám bệnh', value: 200, color: '#10b981' },
+  { name: 'Grooming', value: 150, color: '#f59e0b' },
+];
 
 export default function ShopDashboard() {
   const { user } = useAuth();
 
   const stats = [
-    { label: 'Đơn hôm nay', value: '12', icon: Calendar, gradient: 'from-blue-500 to-blue-600', change: '+3', changeType: 'up' },
-    { label: 'Doanh thu tháng', value: '45.2M', icon: DollarSign, gradient: 'from-green-500 to-emerald-600', change: '+12%', changeType: 'up' },
-    { label: 'Khách hàng', value: '234', icon: Users, gradient: 'from-purple-500 to-purple-600', change: '+8', changeType: 'up' },
-    { label: 'Đánh giá TB', value: '4.8', icon: TrendingUp, gradient: 'from-orange-500 to-orange-600', change: '+0.2', changeType: 'up' },
-  ];
-
-  const recentBookings = [
-    { id: 1, customer: 'Nguyễn Văn A', pet: 'Milo', service: 'Grooming', time: '10:00', status: 'pending' },
-    { id: 2, customer: 'Trần Thị B', pet: 'Luna', service: 'Khám bệnh', time: '11:30', status: 'confirmed' },
-    { id: 3, customer: 'Lê Văn C', pet: 'Max', service: 'Lưu trú', time: '14:00', status: 'completed' },
+    { label: 'Đơn hôm nay', value: '12', icon: Calendar, color: 'blue', change: '+3', trend: 'up' },
+    { label: 'Doanh thu tháng', value: '45.2M', icon: DollarSign, color: 'green', change: '+12%', trend: 'up' },
+    { label: 'Khách hàng', value: '234', icon: Users, color: 'purple', change: '+8', trend: 'up' },
+    { label: 'Tỉ lệ quay lại', value: '68%', icon: TrendingUp, color: 'orange', change: '-2%', trend: 'down' },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      {/* Welcome Header */}
-      <div className="bg-gradient-to-br from-[#1a2b4c] via-slate-800 to-slate-900 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")`
-        }} />
-        <div className="max-w-7xl mx-auto px-6 py-8 relative z-10">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <p className="text-slate-300 text-sm mb-1">Chào mừng trở lại 👋</p>
-              <h1 className="text-3xl font-bold text-white mb-1">{user?.name || 'Shop Owner'}</h1>
-              <p className="text-slate-400 text-sm">Quản lý cửa hàng của bạn một cách hiệu quả</p>
-            </div>
-            <Link
-              to="/shop/profile"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-xl font-medium transition-all border border-white/20"
-            >
-              <Store size={18} />
-              Cài đặt cửa hàng
-            </Link>
-          </div>
+    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#0f172a] p-4 md:p-8">
+      {/* Header Section */}
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+        <div>
+           <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Tổng quan cửa hàng</h1>
+           <p className="text-slate-500 dark:text-slate-400 font-medium mt-1">Xin chào, {user?.name || 'Peteye Shop'}. Chúc bạn một ngày kinh doanh tốt lành!</p>
         </div>
+        <div className="flex items-center gap-3">
+            <button className="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-[#1a2b4c] transition-all relative">
+                <Bell size={20} />
+                <span className="absolute top-3 right-3 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-800" />
+            </button>
+            <div className="h-12 w-[1px] bg-slate-200 dark:bg-slate-700 mx-2" />
+            <Link 
+                to="/shop/camera" 
+                className="px-6 py-3 bg-[#1a2b4c] text-white rounded-2xl font-bold shadow-lg shadow-indigo-900/20 flex items-center gap-2 hover:scale-[1.02] active:scale-95 transition-all text-sm"
+            >
+                <Video size={18} />
+                Xem Live Camera
+            </Link>
+        </div>
+      </header>
+
+      {/* Grid Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        {stats.map((s) => (
+            <div key={s.label} className="bg-white dark:bg-slate-800 p-6 rounded-[2rem] shadow-sm border border-slate-100 dark:border-slate-800 hover:shadow-xl transition-all duration-500 group">
+                <div className="flex justify-between items-start mb-4">
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-${s.color}-500 shadow-lg shadow-${s.color}-500/20 group-hover:scale-110 transition-transform`}>
+                        <s.icon size={22} />
+                    </div>
+                    <div className={`flex items-center gap-1 text-xs font-black ${s.trend === 'up' ? 'text-green-500' : 'text-red-500'}`}>
+                        {s.trend === 'up' ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+                        {s.change}
+                    </div>
+                </div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{s.label}</p>
+                <h3 className="text-3xl font-black text-slate-900 dark:text-white mt-1">{s.value}</h3>
+            </div>
+        ))}
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat) => (
-            <div key={stat.label} className="group bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all border border-slate-100 dark:border-slate-700 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-slate-50 to-transparent dark:from-slate-700/20 rounded-bl-full -z-0 group-hover:scale-110 transition-transform" />
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`w-12 h-12 bg-gradient-to-br ${stat.gradient} rounded-xl flex items-center justify-center shadow-lg shadow-${stat.gradient.split('-')[1]}-500/20`}>
-                    <stat.icon className="text-white" size={22} />
-                  </div>
-                  <div className="flex items-center gap-1 text-sm font-bold text-green-600 dark:text-green-400">
-                    <ArrowUpRight size={16} />
-                    {stat.change}
-                  </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Main Chart Column */}
+        <div className="lg:col-span-2 space-y-8">
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-800">
+                <div className="flex justify-between items-center mb-10">
+                    <div>
+                        <h3 className="text-xl font-bold text-slate-900 dark:text-white">Doanh thu tuần này</h3>
+                        <p className="text-xs text-slate-500 font-medium">Theo dõi biến động dòng tiền trong 7 ngày</p>
+                    </div>
+                    <select className="bg-slate-50 dark:bg-slate-700 border-none rounded-xl text-xs font-bold px-4 py-2 outline-none">
+                        <option>7 ngày gần nhất</option>
+                        <option>30 ngày gần nhất</option>
+                    </select>
                 </div>
-                <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-1">{stat.value}</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400">{stat.label}</p>
-              </div>
+                <div className="h-[350px] w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart data={REVENUE_DATA} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
+                            <defs>
+                                <linearGradient id="colorVal" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                                </linearGradient>
+                            </defs>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                            <XAxis 
+                                dataKey="name" 
+                                axisLine={false} 
+                                tickLine={false} 
+                                tick={{ fontSize: 10, fontWeight: 700, fill: '#94a3b8' }}
+                                dy={10}
+                            />
+                            <YAxis 
+                                axisLine={false} 
+                                tickLine={false} 
+                                tick={{ fontSize: 10, fontWeight: 700, fill: '#94a3b8' }}
+                            />
+                            <Tooltip 
+                                contentStyle={{ 
+                                    borderRadius: '16px', 
+                                    border: 'none', 
+                                    boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
+                                    fontSize: '12px',
+                                    fontWeight: 'bold'
+                                }}
+                            />
+                            <Area 
+                                type="monotone" 
+                                dataKey="value" 
+                                stroke="#3b82f6" 
+                                strokeWidth={3}
+                                fillOpacity={1} 
+                                fill="url(#colorVal)" 
+                            />
+                        </AreaChart>
+                    </ResponsiveContainer>
+                </div>
             </div>
-          ))}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-800">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Phân bổ dịch vụ</h3>
+                    <div className="h-[250px] w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={SERVICE_DATA}>
+                                <XAxis 
+                                    dataKey="name" 
+                                    axisLine={false} 
+                                    tickLine={false} 
+                                    tick={{ fontSize: 9, fontWeight: 700, fill: '#94a3b8' }}
+                                />
+                                <Tooltip cursor={{ fill: '#f8fafc' }} />
+                                <Bar dataKey="value" radius={[10, 10, 0, 0]}>
+                                    {SERVICE_DATA.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                    ))}
+                                </Bar>
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+
+                <div className="bg-gradient-to-br from-indigo-900 to-[#1a2b4c] p-8 rounded-[2.5rem] shadow-xl text-white relative overflow-hidden flex flex-col justify-center">
+                    <div className="absolute -right-10 -bottom-10 w-44 h-44 bg-white/5 rounded-full blur-3xl" />
+                    <div className="relative z-10">
+                        <CreditCard size={40} className="mb-6 opacity-80" />
+                        <h3 className="text-xl font-black mb-2">Số dư ví Shop</h3>
+                        <p className="text-4xl font-black mb-6 tracking-tight">12.450.000đ</p>
+                        <div className="flex gap-4">
+                            <button className="flex-1 py-3 bg-white text-[#1a2b4c] rounded-xl text-xs font-black shadow-lg">Rút tiền</button>
+                            <button className="flex-1 py-3 bg-white/10 text-white border border-white/20 rounded-xl text-xs font-black">Lịch sử</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        {/* Recent Bookings */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-6 mb-8 border border-slate-100 dark:border-slate-700">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Đơn đặt lịch gần đây</h2>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Quản lý và theo dõi các đơn đặt lịch</p>
+        {/* Sidebar Column */}
+        <div className="space-y-8">
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-800">
+                <div className="flex items-center justify-between mb-8">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">Lịch hẹn mới nhất</h3>
+                    <Link to="/shop/bookings" className="text-[10px] font-black uppercase text-indigo-500 tracking-wider">Tất cả</Link>
+                </div>
+                <div className="space-y-6">
+                    {[
+                        { name: 'Nguyễn Văn A', pet: 'Cún Lu', time: '10:30 SA', img: 'https://i.pravatar.cc/150?u=a' },
+                        { name: 'Trần Thị B', pet: 'Mèo Mướp', time: '11:45 SA', img: 'https://i.pravatar.cc/150?u=b' },
+                        { name: 'Lê Văn C', pet: 'Poodle Min', time: '02:00 CH', img: 'https://i.pravatar.cc/150?u=c' },
+                        { name: 'Phạm Anh D', pet: 'Husky Ngáo', time: '04:15 CH', img: 'https://i.pravatar.cc/150?u=d' },
+                    ].map((b, i) => (
+                        <div key={i} className="flex items-center gap-4 group cursor-pointer">
+                            <div className="relative">
+                                <img src={b.img} className="w-10 h-10 rounded-full object-cover shadow-sm group-hover:scale-110 transition-transform" />
+                                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-slate-800 rounded-full" />
+                            </div>
+                            <div className="flex-1">
+                                <h4 className="text-xs font-bold text-slate-900 dark:text-white">{b.name}</h4>
+                                <p className="text-[10px] text-slate-500">{b.pet} • {b.time}</p>
+                            </div>
+                            <button className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-slate-700/50 flex items-center justify-center text-slate-400 group-hover:bg-[#1a2b4c] group-hover:text-white transition-all">
+                                <ChevronRight size={14} />
+                            </button>
+                        </div>
+                    ))}
+                </div>
             </div>
-            <Link to="/shop/bookings" className="flex items-center gap-1 text-sm text-primary hover:text-primary-dark font-semibold transition-colors group">
-              Xem tất cả 
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-          <div className="space-y-3">
-            {recentBookings.map((booking) => (
-              <div key={booking.id} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors group">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-600 dark:to-slate-700 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Users size={20} className="text-slate-600 dark:text-slate-300" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900 dark:text-white">{booking.customer}</h4>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
-                      {booking.pet} • {booking.service}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="text-right hidden sm:block">
-                    <p className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                      <Clock size={14} />
-                      {booking.time}
-                    </p>
-                  </div>
-                  <span
-                    className={`px-3 py-1.5 rounded-full text-xs font-bold ${
-                      booking.status === 'completed'
-                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-                        : booking.status === 'confirmed'
-                        ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400'
-                        : 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400'
-                    }`}
-                  >
-                    {booking.status === 'completed'
-                      ? 'Hoàn thành'
-                      : booking.status === 'confirmed'
-                      ? 'Đã xác nhận'
-                      : 'Chờ xác nhận'}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
 
-        {/* Quick Actions */}
-        <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Truy cập nhanh</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Link
-              to="/shop/bookings"
-              className="group bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all border border-slate-100 dark:border-slate-700 relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-50 to-transparent dark:from-blue-900/20 rounded-bl-full group-hover:scale-110 transition-transform" />
-              <div className="relative z-10">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/20">
-                  <Calendar className="text-white" size={24} />
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-sm border border-slate-100 dark:border-slate-800">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Truy cập nhanh</h3>
+                <div className="grid grid-cols-2 gap-4">
+                    {[
+                        { label: 'Dịch vụ', icon: Package, color: 'indigo', path: '/shop/services' },
+                        { label: 'Camera', icon: Camera, color: 'teal', path: '/shop/camera' },
+                        { label: 'Tin nhắn', icon: MessageCircle, color: 'blue', path: '/shop/messages' },
+                        { label: 'Cài đặt', icon: Settings, color: 'slate', path: '/shop/profile' },
+                    ].map(a => (
+                        <Link key={a.label} to={a.path} className="flex flex-col items-center gap-3 p-4 rounded-2xl bg-slate-50 dark:bg-slate-700/50 hover:bg-white dark:hover:bg-slate-700 border border-transparent hover:border-slate-100 hover:shadow-lg transition-all group">
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center bg-${a.color}-500 text-white shadow-lg shadow-${a.color}-500/20 group-hover:scale-110 transition-transform`}>
+                                <a.icon size={20} />
+                            </div>
+                            <span className="text-[10px] font-black text-slate-700 dark:text-white uppercase tracking-tight">{a.label}</span>
+                        </Link>
+                    ))}
                 </div>
-                <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-primary transition-colors">Quản lý lịch hẹn</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Xem và xử lý các đơn đặt lịch</p>
-              </div>
-            </Link>
-            <Link
-              to="/shop/services"
-              className="group bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all border border-slate-100 dark:border-slate-700 relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-purple-50 to-transparent dark:from-purple-900/20 rounded-bl-full group-hover:scale-110 transition-transform" />
-              <div className="relative z-10">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-purple-500/20">
-                  <Package className="text-white" size={24} />
-                </div>
-                <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-primary transition-colors">Dịch vụ</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Quản lý các dịch vụ của bạn</p>
-              </div>
-            </Link>
-            <Link
-              to="/shop/orders"
-              className="group bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all border border-slate-100 dark:border-slate-700 relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-green-50 to-transparent dark:from-green-900/20 rounded-bl-full group-hover:scale-110 transition-transform" />
-              <div className="relative z-10">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-green-500/20">
-                  <DollarSign className="text-white" size={24} />
-                </div>
-                <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-primary transition-colors">Đơn hàng</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Theo dõi đơn hàng và doanh thu</p>
-              </div>
-            </Link>
-          </div>
+            </div>
         </div>
       </div>
     </div>

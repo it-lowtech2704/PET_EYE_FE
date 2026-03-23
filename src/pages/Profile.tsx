@@ -5,7 +5,6 @@ import { useAuth } from '../contexts/AuthContext';
 const NAV_ITEMS = [
   { icon: 'person', label: 'Thông tin cá nhân', path: '/profile' },
   { icon: 'pets', label: 'Thú cưng của tôi', path: '/profile/pets' },
-  { icon: 'receipt_long', label: 'Lịch sử đơn hàng', path: '/profile/orders' },
   { icon: 'calendar_month', label: 'Lịch sử đặt lịch', path: '/profile/bookings' },
   { icon: 'shield_person', label: 'Bảo mật & Mật khẩu', path: '/profile/security' },
   { icon: 'notifications', label: 'Thông báo', path: '/profile/notifications' },
@@ -15,6 +14,7 @@ export function ProfileLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const [showPerksModal, setShowPerksModal] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -61,29 +61,122 @@ export function ProfileLayout() {
           </div>
 
           {/* Membership card */}
-          <div className="bg-gradient-to-br from-[#1a2b4c]/20 to-[#1a2b4c]/5 dark:from-[#1a2b4c]/30 dark:to-transparent rounded-xl p-6 shadow-sm border border-[#1a2b4c]/20">
-            <div className="flex justify-between items-start mb-4">
-              <span className="bg-[#1a2b4c]/20 text-[#1a2b4c] dark:text-teal-300 text-[10px] uppercase font-bold tracking-widest px-2 py-1 rounded">
-                Trạng thái
+          <div className="bg-gradient-to-br from-[#1a2b4c] to-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden group">
+            <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-all" />
+            
+            <div className="flex justify-between items-start mb-6 relative z-10">
+              <span className="bg-yellow-500/20 text-yellow-500 text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-full border border-yellow-500/30">
+                Premium
               </span>
-              <span className="material-symbols-outlined text-[#1a2b4c] dark:text-teal-400 text-2xl">workspace_premium</span>
-            </div>
-            <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">Cấp thành viên</p>
-            <h3 className="text-xl font-extrabold text-slate-900 dark:text-slate-100 mt-1">Peteye Gold</h3>
-            <div className="mt-6 flex items-center justify-between">
-              <div>
-                <p className="text-slate-500 dark:text-slate-400 text-xs font-medium">Số lịch hẹn</p>
-                <p className="text-lg font-bold text-slate-900 dark:text-slate-100">24 Tổng cộng</p>
-              </div>
-              <div className="size-12 rounded-full border-4 border-[#1a2b4c] dark:border-teal-400 border-t-transparent flex items-center justify-center rotate-45">
-                <span className="text-[10px] font-bold -rotate-45 text-[#1a2b4c] dark:text-teal-400">80%</span>
+              <div className="w-10 h-10 bg-gradient-to-tr from-yellow-400 to-amber-600 rounded-xl flex items-center justify-center shadow-lg transform -rotate-12 group-hover:rotate-0 transition-all duration-500">
+                <span className="material-symbols-outlined text-white text-2xl">workspace_premium</span>
               </div>
             </div>
-            <button className="w-full mt-5 py-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 text-sm font-bold rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 transition-colors">
-              Xem đặc quyền
+
+            <div className="relative z-10">
+              <p className="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Cấp bậc hiện tại</p>
+              <h3 className="text-2xl font-black text-white mt-1">Peteye <span className="text-yellow-500">Gold</span></h3>
+              
+              <div className="mt-8 space-y-2">
+                <div className="flex justify-between items-end">
+                  <p className="text-slate-400 text-xs font-medium">Đến hạng Kim cương</p>
+                  <p className="text-white text-sm font-black">26/50 <span className="text-[10px] font-medium text-slate-500">lịch hẹn</span></p>
+                </div>
+                <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-yellow-500 to-amber-500 rounded-full w-[52%] shadow-[0_0_10px_rgba(234,179,8,0.5)]" />
+                </div>
+              </div>
+            </div>
+
+            <button 
+              onClick={() => setShowPerksModal(true)}
+              className="w-full mt-6 py-2.5 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl border border-white/10 backdrop-blur-sm transition-all flex items-center justify-center gap-2"
+            >
+              Xem đặc quyền của tôi
+              <span className="material-symbols-outlined text-sm">arrow_forward</span>
             </button>
           </div>
         </aside>
+
+        {/* Perks Modal */}
+        {showPerksModal && (
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+              {/* Header */}
+              <div className="relative h-44 bg-[#1a2b4c] flex flex-col items-center justify-center text-white overflow-hidden">
+                <div className="absolute top-0 right-0 w-48 h-48 bg-yellow-500/10 rounded-full blur-3xl -mr-20 -mt-20" />
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-teal-500/10 rounded-full blur-2xl -ml-16 -mb-16" />
+                
+                <div className="relative z-10 flex flex-col items-center">
+                    <div className="w-16 h-16 bg-gradient-to-tr from-yellow-400 to-amber-600 rounded-2xl flex items-center justify-center shadow-2xl transform -rotate-6 mb-3">
+                        <span className="material-symbols-outlined text-white text-4xl">workspace_premium</span>
+                    </div>
+                    <h2 className="text-2xl font-black tracking-tight">Đặc quyền <span className="text-yellow-500">Gold Member</span></h2>
+                    <p className="text-slate-400 text-xs font-medium uppercase tracking-[0.2em] mt-1">Trạng thái: Hoạt động</p>
+                </div>
+                
+                <button 
+                    onClick={() => setShowPerksModal(false)}
+                    className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors border border-white/10"
+                >
+                    <span className="material-symbols-outlined text-white">close</span>
+                </button>
+              </div>
+
+              {/* Content */}
+              <div className="p-8 space-y-8">
+                <div>
+                   <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Các đặc quyền đang hiệu lực</h4>
+                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {[
+                            { title: 'Giảm giá 10%', desc: 'Áp dụng cho mọi dịch vụ', icon: 'scuba_diving' },
+                            { title: 'Ưu tiên đặt chỗ', desc: 'Xác nhận lịch hẹn nhanh x3', icon: 'bolt' },
+                            { title: 'Tích điểm x2', desc: 'Quy đổi Voucher dễ dàng', icon: 'military_tech' },
+                            { title: 'Hỗ trợ VIP', desc: 'Kênh CSKH riêng biệt 24/7', icon: 'headset_mic' },
+                        ].map(p => (
+                            <div key={p.title} className="flex gap-3 p-3 rounded-2xl border border-slate-50 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50">
+                                <div className="w-10 h-10 bg-white dark:bg-slate-700 rounded-xl flex items-center justify-center text-[#1a2b4c] dark:text-teal-400 shadow-sm shrink-0 border border-slate-100 dark:border-slate-600">
+                                    <span className="material-symbols-outlined text-xl">{p.icon}</span>
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-slate-900 dark:text-white">{p.title}</p>
+                                    <p className="text-[10px] text-slate-500">{p.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                   </div>
+                </div>
+
+                <div className="p-5 rounded-2xl bg-gradient-to-r from-teal-500/10 to-indigo-500/10 border border-teal-500/20">
+                    <div className="flex justify-between items-center mb-4">
+                        <div className="flex items-center gap-2">
+                            <span className="material-symbols-outlined text-teal-600">diamond</span>
+                            <p className="text-xs font-bold text-slate-700 dark:text-slate-300">Cấp Kim cương đang chờ bạn!</p>
+                        </div>
+                        <span className="text-[10px] font-black text-teal-600 bg-teal-100 px-2 py-0.5 rounded-full">+ GIẢM 15%</span>
+                    </div>
+                    <div className="space-y-2">
+                        <div className="flex justify-between text-[10px] font-bold text-slate-500">
+                            <span>Sắp đạt được</span>
+                            <span>52% Hoàn thành</span>
+                        </div>
+                        <div className="h-1.5 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                            <div className="h-full bg-teal-500 rounded-full w-[52%]" />
+                        </div>
+                        <p className="text-[10px] text-slate-400 text-center mt-2 italic">Chỉ cần thêm 24 lịch hẹn nữa để thăng hạng!</p>
+                    </div>
+                </div>
+
+                <button 
+                  onClick={() => setShowPerksModal(false)}
+                  className="w-full py-4 bg-[#1a2b4c] text-white rounded-2xl font-bold shadow-xl shadow-indigo-900/20 hover:scale-[1.02] active:scale-95 transition-all text-sm"
+                >
+                  Tuyệt vời, tôi đã hiểu!
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Main */}
         <main className="flex-1">
@@ -223,22 +316,57 @@ export default function Profile() {
           </form>
         </div>
 
-        {/* Quick info cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {[
-            { icon: 'health_and_safety', label: 'Bảo hiểm đang hoạt động', value: 'Peteye Plus (2 thú cưng)', color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-900/20' },
-            { icon: 'payments', label: 'Thanh toán mặc định', value: 'Visa kết thúc bằng •••• 4242', color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-900/20' },
-          ].map(c => (
-            <div key={c.label} className="bg-white dark:bg-slate-900 p-5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 flex items-center gap-4">
-              <div className={`size-12 rounded-xl ${c.bg} flex items-center justify-center ${c.color}`}>
-                <span className="material-symbols-outlined text-xl">{c.icon}</span>
-              </div>
-              <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">{c.label}</p>
-                <p className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-0.5">{c.value}</p>
-              </div>
+        {/* Membership Tiers Explanation */}
+
+        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 md:p-8">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="size-10 rounded-xl bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center text-yellow-600">
+                <span className="material-symbols-outlined">military_tech</span>
             </div>
-          ))}
+            <div>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">Cấp bậc & Đặc quyền</h3>
+                <p className="text-xs text-slate-500 font-medium">Càng nhiều lịch hẹn, ưu đãi càng lớn!</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { level: 'Đồng', target: 'Mặc định', icon: 'license', color: 'slate', perks: ['Ưu đãi 1-2%', 'Hỗ trợ 24/7'] },
+              { level: 'Bạc', target: '10 Lịch hẹn', icon: 'workspace_premium', color: 'blue', perks: ['Giảm giá 5%', 'Quà tặng sinh nhật'] },
+              { level: 'Vàng', target: '20 Lịch hẹn', icon: 'stars', color: 'yellow', active: true, perks: ['Giảm giá 10%', 'Ưu tiên đặt chỗ', 'Tích điểm x2'] },
+              { level: 'Kim cương', target: '50 Lịch hẹn', icon: 'diamond', color: 'teal', perks: ['Giảm giá 15%', 'Dịch vụ miễn phí', 'Hotline VIP'] },
+            ].map((tier) => (
+              <div 
+                key={tier.level}
+                className={`relative p-5 rounded-2xl border transition-all ${
+                  tier.active 
+                    ? 'border-yellow-500 bg-yellow-50/30 dark:bg-yellow-900/10 shadow-lg' 
+                    : 'border-slate-100 dark:border-slate-800 hover:border-slate-300'
+                }`}
+              >
+                {tier.active && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-yellow-500 text-white text-[9px] font-black uppercase px-3 py-1 rounded-full shadow-md z-10 w-max">
+                        Cấp hiện tại
+                    </div>
+                )}
+                <div className="flex flex-col h-full">
+                    <div className="flex items-center justify-between mb-4">
+                        <span className={`material-symbols-outlined text-${tier.color}-500 text-2xl`}>{tier.icon}</span>
+                        <span className="text-[10px] font-bold text-slate-400">{tier.target}</span>
+                    </div>
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-4">Peteye {tier.level}</h4>
+                    <ul className="space-y-2 mt-auto">
+                        {tier.perks.map(perk => (
+                            <li key={perk} className="flex items-center gap-2 text-[10px] font-medium text-slate-600 dark:text-slate-400">
+                                <span className="material-symbols-outlined text-xs text-green-500">check</span>
+                                {perk}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </main>
   );

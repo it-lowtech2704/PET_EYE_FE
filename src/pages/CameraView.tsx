@@ -53,12 +53,15 @@ const CARE_LOGS = [
     { time: 'Hôm qua', action: 'Uống nước', desc: 'Bổ sung nước đầy đủ – 200ml.', icon: 'droplets', color: '#00b4d8' },
 ];
 
-const CHAT_MESSAGES = [
-    { from: 'staff', name: 'Nhân viên Lan', text: 'Chào bạn! Bé Miu Miu đang rất vui và khoẻ. 🐾', time: '10:32 SA' },
-    { from: 'me', name: 'Bạn', text: 'Cảm ơn bạn! Bé có ăn đủ bữa không?', time: '10:35 SA' },
-    { from: 'staff', name: 'Nhân viên Lan', text: 'Có ạ! Bé ăn rất ngon, hết sạch hạt Royal Canin. Bé còn đòi thêm nữa 😄', time: '10:36 SA' },
-    { from: 'me', name: 'Bạn', text: 'Tốt quá! Cảm ơn bạn rất nhiều 🙏', time: '10:38 SA' },
-];
+const CHAT_MESSAGES: Record<string, any[]> = {
+    'cam01': [
+        { from: 'staff', name: 'Nhân viên Lan', text: 'Chào bạn! Bé Miu Miu đang rất vui và khoẻ. 🐾', time: '10:32 SA' },
+        { from: 'me', name: 'Bạn', text: 'Cảm ơn bạn! Bé có ăn đủ bữa không?', time: '10:35 SA' },
+    ],
+    'cam02': [
+        { from: 'staff', name: 'Nhân viên Lan', text: 'Chào bạn! Bé Miu Miu đang chơi ở khu vui chơi nhé.', time: '09:15 SA' },
+    ],
+};
 
 /* ─── ICON HELPER ────────────────────────────────────────────────────────── */
 function LogIcon({ type, color }: { type: string; color: string }) {
@@ -164,7 +167,7 @@ export default function CameraView() {
     const [fullscreen, setFullscreen] = useState(false);
     const [tab, setTab] = useState<'logs' | 'chat'>('logs');
     const [msg, setMsg] = useState('');
-    const [chatMessages, setChatMessages] = useState(CHAT_MESSAGES);
+    const [chatMessages, setChatMessages] = useState<Record<string, any[]>>(CHAT_MESSAGES);
     const [layout, setLayout] = useState<'split' | 'main'>('split');
     const [currentTime, setCurrentTime] = useState(new Date());
     const chatEndRef = useRef<HTMLDivElement>(null);
@@ -180,11 +183,31 @@ export default function CameraView() {
 
     const sendMessage = () => {
         if (!msg.trim()) return;
-        setChatMessages(prev => [...prev, { from: 'me', name: 'Bạn', text: msg.trim(), time: currentTime.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) + ' ' + (currentTime.getHours() < 12 ? 'SA' : 'CH') }]);
+        const newMsg = { 
+            from: 'me', 
+            name: 'Bạn', 
+            text: msg.trim(), 
+            time: currentTime.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) + ' ' + (currentTime.getHours() < 12 ? 'SA' : 'CH') 
+        };
+        
+        setChatMessages(prev => ({
+            ...prev,
+            [activeCam.id]: [...(prev[activeCam.id] || []), newMsg]
+        }));
         setMsg('');
+
         // Simulate staff reply after 2s
         setTimeout(() => {
-            setChatMessages(prev => [...prev, { from: 'staff', name: 'Nhân viên Lan', text: 'Cảm ơn bạn! Chúng tôi đã nhận được thông tin. 🐾', time: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) + ' ' + (new Date().getHours() < 12 ? 'SA' : 'CH') }]);
+            const reply = { 
+                from: 'staff', 
+                name: 'Nhân viên Lan', 
+                text: 'Cảm ơn bạn! Chúng tôi đã nhận được thông tin. 🐾', 
+                time: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) + ' ' + (new Date().getHours() < 12 ? 'SA' : 'CH') 
+            };
+            setChatMessages(prev => ({
+                ...prev,
+                [activeCam.id]: [...(prev[activeCam.id] || []), reply]
+            }));
         }, 2000);
     };
 
@@ -424,7 +447,7 @@ export default function CameraView() {
                             {tab === 'chat' && (
                                 <div className="flex flex-col h-full bg-slate-50/50">
                                     <div className="flex-1 p-5 space-y-4 overflow-y-auto scrollbar-hide">
-                                        {chatMessages.map((m, i) => (
+                                        {(chatMessages[activeCam.id] || []).map((m, i) => (
                                             <div key={i} className={`flex gap-3 ${m.from === 'me' ? 'flex-row-reverse' : ''}`}>
                                                 <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-[10px] font-bold shadow-sm ${m.from === 'staff' ? 'bg-secondary/10 text-secondary border border-secondary/20' : 'bg-primary text-white'}`}>
                                                     {m.name.charAt(0)}
@@ -438,6 +461,12 @@ export default function CameraView() {
                                                 </div>
                                             </div>
                                         ))}
+                                        {(!chatMessages[activeCam.id] || chatMessages[activeCam.id].length === 0) && (
+                                            <div className="h-full flex flex-col items-center justify-center text-center opacity-50 space-y-3">
+                                                <MessageCircle className="w-12 h-12" />
+                                                <p className="text-xs font-medium">Chưa có tin nhắn cho camera này</p>
+                                            </div>
+                                        )}
                                         <div ref={chatEndRef} />
                                     </div>
                                 </div>

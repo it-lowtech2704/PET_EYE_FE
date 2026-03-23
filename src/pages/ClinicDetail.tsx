@@ -29,19 +29,6 @@ const SERVICES = [
     image: 'https://images.unsplash.com/photo-1560807707-8cc77767d783?w=400&q=80',
   },
   {
-    icon: 'hotel',
-    title: 'Lưu trú khách sạn thú cưng',
-    desc: 'Phòng riêng, điều hòa 24/7, camera giám sát.',
-    details: [
-      'Phòng riêng với điều hòa, giường êm và chăn ấm.',
-      'Giám sát 24/7 qua camera, nhân viên chăm sóc thay phiên theo dõi.',
-      'Bao gồm 2 bữa ăn, cho ăn theo thực đơn hoặc theo yêu cầu chủ.',
-    ],
-    price: '200.000đ',
-    unit: '/ngày',
-    image: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400&q=80',
-  },
-  {
     icon: 'medical_services',
     title: 'Khám tổng quát',
     desc: 'Khám sức khỏe định kỳ, tư vấn dinh dưỡng.',
@@ -137,6 +124,13 @@ const HERO_IMAGES = [
   'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1200&q=80',
 ];
 
+const CAMERA_OPTIONS = [
+  { id: 'basic', label: 'Cơ bản (720p)', price: 0, desc: 'Giám sát tiêu chuẩn, đã bao gồm trong gói', icon: 'visibility' },
+  { id: 'hd', label: 'Sắc nét (1080p HD)', price: 50000, desc: 'Hình ảnh sắc nét, màu sắc trung thực', icon: 'hd' },
+  { id: '360', label: 'Toàn cảnh (360°)', price: 100000, desc: 'Xoay 360 độ, không góc chết', icon: 'flip_camera_android' },
+  { id: 'ai', label: 'AI Giám sát', price: 150000, desc: 'Cảnh báo tự động hành vi bất thường', icon: 'psychology' },
+];
+
 function StarRating({ rating, size = 'text-base' }: { rating: number; size?: string }) {
   return (
     <div className={`flex items-center gap-0.5 text-amber-400 ${size}`}>
@@ -154,6 +148,8 @@ export default function ClinicDetail() {
   const [isFavorited, setIsFavorited] = useState(false);
   const [reviewFilter, setReviewFilter] = useState('Tất cả');
   const [selectedServices, setSelectedServices] = useState<string[]>(['Khám tổng quát']);
+  const [isHotelSelected, setIsHotelSelected] = useState(false);
+  const [selectedCameraOption, setSelectedCameraOption] = useState(CAMERA_OPTIONS[0]);
 
   const toggleService = (serviceTitle: string) => {
     setSelectedServices(prev =>
@@ -352,6 +348,96 @@ export default function ClinicDetail() {
                     </div>
                   </div>
                 ))}
+              </div>
+            </section>
+  
+            {/* Pet Hotel & Camera Options */}
+            <section className="border-b border-slate-200 dark:border-slate-800 pb-8">
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/30 rounded-2xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-sm border border-indigo-100 dark:border-indigo-800">
+                    <span className="material-symbols-outlined text-2xl">hotel</span>
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Dịch vụ Lưu trú Khách sạn</h2>
+                    <p className="text-xs text-slate-500 font-medium mt-0.5">Tiêu chuẩn quốc tế, giám sát 24/7</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold text-slate-900 dark:text-white">200.000đ</span>
+                  <span className="text-xs text-slate-400">/ngày</span>
+                  <div 
+                    onClick={() => setIsHotelSelected(!isHotelSelected)}
+                    className={`relative w-12 h-6 rounded-full cursor-pointer transition-all duration-300 ml-2 ${isHotelSelected ? 'bg-indigo-600 shadow-inner' : 'bg-slate-200 dark:bg-slate-700'}`}
+                  >
+                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all duration-300 ${isHotelSelected ? 'left-7 shadow-sm' : 'left-1'}`} />
+                  </div>
+                </div>
+              </div>
+
+              <div className={`transition-all duration-500 overflow-hidden ${isHotelSelected ? 'max-h-[800px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+                <div className="bg-white dark:bg-slate-800 rounded-2xl border border-indigo-100 dark:border-indigo-800 shadow-sm overflow-hidden mb-6">
+                  <div className="p-5 flex flex-col md:flex-row gap-6">
+                    <div className="w-full md:w-1/3 h-48 rounded-xl overflow-hidden shadow-md">
+                      <img 
+                        src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800&q=80" 
+                        className="w-full h-full object-cover"
+                        alt="Pet Hotel"
+                      />
+                    </div>
+                    <div className="flex-1 space-y-4">
+                      <h4 className="font-bold text-slate-900 dark:text-white text-lg">Gói lưu trú Premium</h4>
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+                        {[
+                          'Phòng riêng điều hòa 24/7',
+                          '2 bữa ăn/ngày theo yêu cầu',
+                          'Vệ sinh khay cát/chuồng sạch sẽ',
+                          'Theo dõi sức khỏe hàng ngày',
+                          'Thời gian vui chơi tập thể',
+                          'Camera giám sát trực tiếp'
+                        ].map(item => (
+                          <li key={item} className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                            <span className="material-symbols-outlined text-indigo-500 text-sm">check_circle</span>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="bg-indigo-50/50 dark:bg-indigo-950/20 p-5 border-t border-indigo-100 dark:border-indigo-900">
+                    <h4 className="text-sm font-bold text-indigo-900 dark:text-indigo-400 uppercase tracking-wider mb-4">Nâng cấp Camera Giám sát</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {CAMERA_OPTIONS.map((opt) => (
+                        <div 
+                          key={opt.id}
+                          onClick={() => setSelectedCameraOption(opt)}
+                          className={`p-4 rounded-xl border-2 cursor-pointer transition-all flex items-center justify-between group ${
+                            selectedCameraOption.id === opt.id 
+                              ? 'bg-white dark:bg-indigo-900/40 border-indigo-500 shadow-md' 
+                              : 'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 hover:border-indigo-200'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${selectedCameraOption.id === opt.id ? 'bg-indigo-500 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-400 group-hover:bg-indigo-100 group-hover:text-indigo-500'}`}>
+                              <span className="material-symbols-outlined text-xl">{opt.icon}</span>
+                            </div>
+                            <div>
+                              <p className="text-sm font-bold text-slate-900 dark:text-white">{opt.label}</p>
+                              <p className="text-[10px] text-slate-500 dark:text-slate-400">{opt.desc}</p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className={`text-xs font-bold ${opt.price === 0 ? 'text-teal-600' : 'text-slate-900 dark:text-white'}`}>
+                              {opt.price === 0 ? 'MIỄN PHÍ' : `+${opt.price.toLocaleString()}đ`}
+                            </p>
+                            {opt.price > 0 && <p className="text-[8px] text-slate-400">/ngày</p>}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
             </section>
 
@@ -574,39 +660,78 @@ export default function ClinicDetail() {
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 block">
                     Chọn dịch vụ
                   </label>
-                  <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 max-h-[240px] overflow-y-auto">
-                    {SERVICES.map((svc) => (
-                      <label
-                        key={svc.title}
-                        className="flex items-start gap-3 p-2 rounded-lg hover:bg-white dark:hover:bg-slate-700 cursor-pointer transition-colors group"
-                      >
+                    <div className="bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 max-h-[240px] overflow-y-auto">
+                      {/* Hotel Service Special Case in Sidebar */}
+                      <label className="flex items-start gap-3 p-2 rounded-lg hover:bg-white dark:hover:bg-slate-700 cursor-pointer transition-colors group mb-1 border-b border-slate-100 dark:border-slate-700/50 pb-3">
                         <input
                           type="checkbox"
-                          checked={selectedServices.includes(svc.title)}
-                          onChange={() => toggleService(svc.title)}
+                          checked={isHotelSelected}
+                          onChange={() => setIsHotelSelected(!isHotelSelected)}
                           className="mt-1 w-4 h-4 rounded border-slate-300 text-[#1a2b4c] focus:ring-[#1a2b4c] cursor-pointer"
                         />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-2">
-                            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200 group-hover:text-[#1a2b4c] dark:group-hover:text-teal-400 transition-colors">
-                              {svc.title}
+                            <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400 group-hover:translate-x-1 transition-transform inline-block">
+                              Lưu trú Khách sạn
                             </span>
-                            <span className="text-xs font-bold text-slate-900 dark:text-slate-100 shrink-0">
-                              {svc.price}
+                            <span className="text-xs font-black text-slate-900 dark:text-slate-100 shrink-0">
+                              {(200000 + selectedCameraOption.price).toLocaleString()}đ/ng
                             </span>
                           </div>
-                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1">
-                            {svc.desc}
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
+                            Camera: {selectedCameraOption.label}
                           </p>
                         </div>
                       </label>
-                    ))}
-                  </div>
-                  {selectedServices.length > 0 && (
-                    <div className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                      Đã chọn: {selectedServices.length} dịch vụ
+
+                      {SERVICES.map((svc) => (
+                        <label
+                          key={svc.title}
+                          className="flex items-start gap-3 p-2 rounded-lg hover:bg-white dark:hover:bg-slate-700 cursor-pointer transition-colors group"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedServices.includes(svc.title)}
+                            onChange={() => toggleService(svc.title)}
+                            className="mt-1 w-4 h-4 rounded border-slate-300 text-[#1a2b4c] focus:ring-[#1a2b4c] cursor-pointer"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-sm font-semibold text-slate-700 dark:text-slate-200 group-hover:text-[#1a2b4c] dark:group-hover:text-teal-400 transition-colors">
+                                {svc.title}
+                              </span>
+                              <span className="text-xs font-bold text-slate-900 dark:text-slate-100 shrink-0">
+                                {svc.price}
+                              </span>
+                            </div>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-1">
+                              {svc.desc}
+                            </p>
+                          </div>
+                        </label>
+                      ))}
                     </div>
-                  )}
+                    {/* Summary row */}
+                    {(selectedServices.length > 0 || isHotelSelected) && (
+                      <div className="mt-3 p-3 bg-slate-900 dark:bg-slate-800 rounded-xl text-white">
+                        <div className="flex justify-between items-center text-xs opacity-80 mb-1">
+                          <span>Dịch vụ đã chọn:</span>
+                          <span>{selectedServices.length + (isHotelSelected ? 1 : 0)}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-bold">Tổng cộng:</span>
+                          <span className="text-base font-black text-teal-400">
+                            {(
+                              selectedServices.reduce((sum, title) => {
+                                const svc = SERVICES.find(s => s.title === title);
+                                return sum + (svc ? parseInt(svc.price.replace(/\D/g, '')) : 0);
+                              }, 0) + 
+                              (isHotelSelected ? (200000 + selectedCameraOption.price) : 0)
+                            ).toLocaleString()}đ
+                          </span>
+                        </div>
+                      </div>
+                    )}
                 </div>
 
                 {/* Date */}
