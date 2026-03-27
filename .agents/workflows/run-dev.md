@@ -1,5 +1,5 @@
 ---
-description: Run the development server for Carevia (Peteye project)
+description: Run the development server for Peteye (Peteye project)
 ---
 
 ## Steps to run the dev server
@@ -29,3 +29,4 @@ description: Run the development server for Carevia (Peteye project)
 - The HomePage is at `/home` (accessible after login/register)
 - Login at `/login`, Register at `/register`
 - Use the "Demo — Vào HomePage ngay" button on Login/Register pages to skip form validation and go directly to the HomePage
+

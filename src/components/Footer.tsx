@@ -59,7 +59,7 @@ export default function Footer() {
                             </li>
                             <li className="flex items-center gap-3">
                                 <span className="material-symbols-outlined text-[20px] shrink-0">mail</span>
-                                <span>hotro@carevia.vn</span>
+                                <span>hotro@Peteye.vn</span>
                             </li>
                         </ul>
                     </div>
@@ -77,3 +77,4 @@ export default function Footer() {
         </footer>
     );
 }
+

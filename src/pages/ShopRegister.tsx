@@ -84,7 +84,7 @@ export default function ShopRegister() {
             <Store size={32} className="text-white" />
           </div>
           <h1 className="text-3xl font-black mb-2">Đăng ký làm đối tác</h1>
-          <p className="text-slate-600">Tham gia Carevia để tiếp cận hàng ngàn khách hàng</p>
+          <p className="text-slate-600">Tham gia Peteye để tiếp cận hàng ngàn khách hàng</p>
         </div>
 
         {/* Progress */}
@@ -330,7 +330,7 @@ export default function ShopRegister() {
                 />
                 <label htmlFor="terms" className="text-xs text-slate-600">
                   Tôi đồng ý với <a href="#" className="font-bold text-[#1a2b4c] hover:underline">Điều khoản dịch vụ</a> và{' '}
-                  <a href="#" className="font-bold text-[#1a2b4c] hover:underline">Chính sách bảo mật</a> của Carevia.
+                  <a href="#" className="font-bold text-[#1a2b4c] hover:underline">Chính sách bảo mật</a> của Peteye.
                   Tôi cam kết cung cấp thông tin chính xác và tuân thủ các quy định của nền tảng.
                 </label>
               </div>
@@ -371,3 +371,4 @@ export default function ShopRegister() {
     </div>
   );
 }
+

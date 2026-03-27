@@ -21,12 +21,12 @@ export default function Register() {
     }
     
     // Customer registration
-    login({ name: name || 'Thành viên mới', email: email || 'member@carevia.vn' });
+    login({ name: name || 'Thành viên mới', email: email || 'member@Peteye.vn' });
     navigate('/home');
   };
 
   const handleDemoRegister = () => {
-    login({ name: 'Thành viên mới', email: 'new@carevia.vn' });
+    login({ name: 'Thành viên mới', email: 'new@Peteye.vn' });
     navigate('/home');
   };
 
@@ -224,3 +224,4 @@ export default function Register() {
     </div>
   );
 }
+

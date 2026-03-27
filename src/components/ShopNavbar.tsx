@@ -62,7 +62,7 @@ export default function ShopNavbar() {
                 <Store className="text-white" size={18} />
               </div>
               <div className="hidden sm:block">
-                <p className="text-sm font-bold text-slate-900 dark:text-white leading-none">Carevia Partner</p>
+                <p className="text-sm font-bold text-slate-900 dark:text-white leading-none">Peteye Partner</p>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400">Quản lý cửa hàng</p>
               </div>
             </Link>
@@ -151,7 +151,7 @@ export default function ShopNavbar() {
                 <div className="absolute top-[calc(100%+8px)] right-0 w-52 bg-white dark:bg-slate-800 rounded-2xl shadow-xl shadow-slate-200/60 dark:shadow-slate-900/80 border border-slate-100 dark:border-slate-700 py-1.5 z-50">
                   <div className="px-3.5 py-2.5 border-b border-slate-100 dark:border-slate-700 mb-1">
                     <p className="text-[13px] font-semibold text-slate-900 dark:text-white truncate">{user?.name || 'Shop'}</p>
-                    <p className="text-[11px] text-slate-400 mt-0.5">Đối tác Carevia</p>
+                    <p className="text-[11px] text-slate-400 mt-0.5">Đối tác Peteye</p>
                   </div>
 
                   {[
@@ -235,3 +235,4 @@ export default function ShopNavbar() {
     </header>
   );
 }
+

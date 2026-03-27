@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation, Navigate, Link } f
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import Logo from './components/Logo';
 import Home from './pages/LandingPage';
 import HomePage from './pages/HomePage';
 import Login from './pages/Login';

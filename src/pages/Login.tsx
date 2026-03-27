@@ -50,7 +50,7 @@ export default function Login() {
                 className="w-full h-full object-cover"
               />
             </div>
-            <h1 className="text-3xl font-bold text-[#1a2b4c] mb-4">Chào mừng bạn tới Carevia</h1>
+            <h1 className="text-3xl font-bold text-[#1a2b4c] mb-4">Chào mừng bạn tới Peteye</h1>
             <p className="text-slate-500 text-lg font-medium">Nơi thú cưng của bạn được chăm sóc như gia đình.</p>
           </div>
           <div className="absolute -top-20 -left-20 w-64 h-64 bg-[#1a2b4c]/5 rounded-full blur-3xl"></div>
@@ -98,7 +98,7 @@ export default function Login() {
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
                 <input 
                   className="w-full pl-12 pr-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-slate-900 focus:ring-2 focus:ring-[#1a2b4c]/20 focus:border-[#1a2b4c] outline-none transition-all" 
-                  placeholder="example@carevia.vn" 
+                  placeholder="example@Peteye.vn" 
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -175,3 +175,4 @@ export default function Login() {
     </div>
   );
 }
+

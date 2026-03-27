@@ -13,7 +13,7 @@ export default function ShopRegisterSuccess() {
           </div>
           <h1 className="text-4xl font-black mb-2">Đăng ký thành công!</h1>
           <p className="text-slate-600 text-lg">
-            Cảm ơn bạn đã đăng ký trở thành đối tác của Carevia
+            Cảm ơn bạn đã đăng ký trở thành đối tác của Peteye
           </p>
         </div>
 
@@ -100,7 +100,7 @@ export default function ShopRegisterSuccess() {
             <p className="flex items-center gap-2">
               <Mail size={16} className="text-blue-600" />
               <span className="font-medium">Email:</span>
-              <a href="mailto:partner@carevia.vn" className="text-blue-600 hover:underline">partner@carevia.vn</a>
+              <a href="mailto:partner@Peteye.vn" className="text-blue-600 hover:underline">partner@Peteye.vn</a>
             </p>
             <p className="flex items-center gap-2">
               <span className="text-blue-600">📞</span>
@@ -128,9 +128,10 @@ export default function ShopRegisterSuccess() {
         </div>
 
         <p className="text-center text-sm text-slate-500 mt-6">
-          Cảm ơn bạn đã tin tưởng và lựa chọn Carevia! 🎉
+          Cảm ơn bạn đã tin tưởng và lựa chọn Peteye! 🎉
         </p>
       </div>
     </div>
   );
 }
+

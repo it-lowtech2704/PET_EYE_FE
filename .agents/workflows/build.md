@@ -1,5 +1,5 @@
 ---
-description: Build the production bundle for Carevia (Peteye project)
+description: Build the production bundle for Peteye (Peteye project)
 ---
 
 ## Steps to build for production
@@ -29,3 +29,4 @@ description: Build the production bundle for Carevia (Peteye project)
 ## Notes
 - TypeScript errors will fail the build. Fix any type errors before deploying.
 - The build output is optimized and minified for production.
+

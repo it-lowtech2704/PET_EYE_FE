@@ -244,7 +244,7 @@ export default function Payment() {
                                         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/4" />
                                         <div className="relative z-10">
                                             <div className="flex justify-between items-start mb-6">
-                                                <span className="font-bold text-xl tracking-widest">CAREVIA</span>
+                                                <span className="font-bold text-xl tracking-widest">Peteye</span>
                                                 <span className="material-symbols-outlined text-3xl text-white/70">credit_card</span>
                                             </div>
                                             <p className="font-mono text-lg tracking-[0.3em] mb-4 text-white/90">
@@ -439,3 +439,4 @@ export default function Payment() {
         </div>
     );
 }
+

@@ -193,7 +193,7 @@ export function ProfileLayout() {
 export default function Profile() {
   const { user } = useAuth();
   const [name, setName] = useState(user?.name || 'Demo User');
-  const [email, setEmail] = useState(user?.email || 'demo@carevia.vn');
+  const [email, setEmail] = useState(user?.email || 'demo@Peteye.vn');
   const [phone, setPhone] = useState('0909 123 456');
   const [dob, setDob] = useState('12/03/1992');
   const [address, setAddress] = useState('123 Nguyễn Thị Thập, Quận 7, TP. Hồ Chí Minh');
@@ -371,3 +371,4 @@ export default function Profile() {
       </main>
   );
 }
+

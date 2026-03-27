@@ -1,13 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-
-export type UserRole = 'admin' | 'shop' | 'customer';
-
-interface User {
-  name: string;
-  email: string;
-  role: UserRole;
-  avatar?: string;
-}
+import { User, UserRole } from '../types';
 
 interface AuthContextType {
   user: User | null;
@@ -26,7 +18,7 @@ const AuthContext = createContext<AuthContextType>({
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(() => {
     try {
-      const stored = localStorage.getItem('carevia_user');
+      const stored = localStorage.getItem('Peteye_user');
       return stored ? JSON.parse(stored) : null;
     } catch {
       return null;
@@ -34,22 +26,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   });
 
   const login = async (email: string, password: string, role: UserRole) => {
-    // Simulate API call
+    // Simulate API call - In production, this would call an auth service
     await new Promise(resolve => setTimeout(resolve, 500));
     
     const userData: User = {
+      id: '1',
       name: email.split('@')[0],
       email,
       role,
+      token: 'fake-jwt-token', // Simulated token
     };
     
     setUser(userData);
-    localStorage.setItem('carevia_user', JSON.stringify(userData));
+    localStorage.setItem('Peteye_user', JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('carevia_user');
+    localStorage.removeItem('Peteye_user');
   };
 
   return (
@@ -62,3 +56,4 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   return useContext(AuthContext);
 }
+

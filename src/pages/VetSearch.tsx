@@ -1,122 +1,29 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
-const CLINICS = [
-    {
-        id: 1,
-        name: 'Phòng Khám Thú Y PetCare Sài Gòn',
-        address: '123 Nguyễn Thị Thập, Quận 7, TP.HCM',
-        rating: 4.8,
-        reviewCount: 120,
-        isOpen: true,
-        hours: '08:00 - 20:00',
-        distance: '1.2 km',
-        price: 'Từ 150.000đ',
-        tags: ['Siêu âm', 'Phẫu thuật', 'Spa', 'Cấp cứu 24/7'],
-        image: 'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?q=80&w=800&auto=format&fit=crop',
-        verified: true,
-        badge: 'Top rated',
-    },
-    {
-        id: 2,
-        name: 'Bệnh Viện Thú Y Quận 1',
-        address: '45 Lê Lai, Quận 1, TP.HCM',
-        rating: 4.6,
-        reviewCount: 85,
-        isOpen: true,
-        hours: '07:30 - 21:00',
-        distance: '2.8 km',
-        price: 'Từ 200.000đ',
-        tags: ['Khám tổng quát', 'Tiêm phòng', 'Nội soi'],
-        image: "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?auto=format&fit=crop&w=800&q=80",
-        verified: true,
-        badge: null,
-    },
-    {
-        id: 3,
-        name: 'Pet Spa & Grooming Luxury',
-        address: '77 Nguyễn Huệ, Quận 1, TP.HCM',
-        rating: 4.9,
-        reviewCount: 200,
-        isOpen: false,
-        hours: '09:00 - 18:00',
-        distance: '3.1 km',
-        price: 'Từ 250.000đ',
-        tags: ['Grooming', 'Spa', 'Cắt tỉa lông'],
-        image: 'https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=800&auto=format&fit=crop',
-        verified: false,
-        badge: 'Phổ biến',
-    },
-    {
-        id: 4,
-        name: 'PetCare Bình Thạnh',
-        address: '234 Bạch Đằng, Quận Bình Thạnh, TP.HCM',
-        rating: 4.5,
-        reviewCount: 60,
-        isOpen: true,
-        hours: '08:00 - 19:00',
-        distance: '4.5 km',
-        price: 'Từ 100.000đ',
-        tags: ['Khám bệnh', 'Tiêm phòng', 'Phẫu thuật'],
-        image: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=800&q=80",
-        verified: true,
-        badge: null,
-    },
-    {
-        id: 5,
-        name: 'Khách Sạn Thú Cưng Luxury',
-        address: '90 Lê Văn Sỹ, Quận 3, TP.HCM',
-        rating: 4.7,
-        reviewCount: 95,
-        isOpen: true,
-        hours: '24/7',
-        distance: '2.0 km',
-        price: 'Từ 200.000đ/ngày',
-        tags: ['Lưu trú', 'Camera live', 'Chăm sóc 24/7'],
-        image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1200&q=80",
-        verified: true,
-        badge: 'Mới',
-    },
-    {
-        id: 6,
-        name: 'Phòng Khám Thú Y Tân Bình',
-        address: '56 Hoàng Văn Thụ, Quận Tân Bình, TP.HCM',
-        rating: 4.4,
-        reviewCount: 42,
-        isOpen: false,
-        hours: '08:30 - 18:30',
-        distance: '5.8 km',
-        price: 'Từ 120.000đ',
-        tags: ['Khám tổng quát', 'Xét nghiệm'],
-        image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?q=80&w=800&auto=format&fit=crop',
-        verified: false,
-        badge: null,
-    },
-];
+import { useClinics } from '../hooks/useClinics';
 
 const SERVICE_TYPES = ['Tất cả', 'Khám thú y', 'Spa & Grooming', 'Lưu trú', 'Tiêm phòng', 'Phẫu thuật', 'Pet Shop'];
 const SORT_OPTIONS = ['Gần nhất', 'Đánh giá cao nhất', 'Giá thấp nhất', 'Mới nhất'];
 
 export default function VetSearch() {
-    const [searchQuery, setSearchQuery] = useState('');
-    const [location, setLocation] = useState('Quận 7, TP. Hồ Chí Minh');
-    const [activeService, setActiveService] = useState('Tất cả');
-    const [sortBy, setSortBy] = useState('Gần nhất');
-    const [showOpenOnly, setShowOpenOnly] = useState(false);
-    const [showVerifiedOnly, setShowVerifiedOnly] = useState(false);
-    const [minRating, setMinRating] = useState(0);
-    const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
+    const {
+        clinics,
+        isLoading,
+        searchQuery,
+        setSearchQuery,
+        activeService,
+        setActiveService,
+        showOpenOnly,
+        setShowOpenOnly,
+        showVerifiedOnly,
+        setShowVerifiedOnly,
+        minRating,
+        setMinRating,
+    } = useClinics();
 
-    const filtered = CLINICS.filter((c) => {
-        const matchSearch =
-            !searchQuery ||
-            c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            c.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
-        const matchOpen = !showOpenOnly || c.isOpen;
-        const matchVerified = !showVerifiedOnly || c.verified;
-        const matchRating = c.rating >= minRating;
-        return matchSearch && matchOpen && matchVerified && matchRating;
-    });
+    const [location, setLocation] = useState('Quận 7, TP. Hồ Chí Minh');
+    const [sortBy, setSortBy] = useState('Gần nhất');
+    const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
@@ -336,7 +243,7 @@ export default function VetSearch() {
                         {/* Results header */}
                         <div className="flex items-center justify-between mb-4 flex-wrap gap-3">
                             <p className="text-slate-600 dark:text-slate-400 text-sm font-medium">
-                                Tìm thấy <strong className="text-slate-900 dark:text-slate-100">{filtered.length}</strong> kết quả
+                                Tìm thấy <strong className="text-slate-900 dark:text-slate-100">{clinics.length}</strong> kết quả
                                 {location && (
                                     <span>
                                         {' '}
@@ -379,101 +286,109 @@ export default function VetSearch() {
 
                         {/* Clinic Cards */}
                         <div className={viewMode === 'grid' ? 'grid sm:grid-cols-2 gap-4' : 'flex flex-col gap-4'}>
-                            {filtered.map((clinic) => (
-                                <Link
-                                    key={clinic.id}
-                                    to={`/clinic/${clinic.id}`}
-                                    className={`group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-xl hover:border-[#1a2b4c]/30 transition-all duration-300 ${viewMode === 'list' ? 'flex flex-col sm:flex-row' : 'flex flex-col'
-                                        }`}
-                                >
-                                    {/* Image */}
-                                    <div
-                                        className={`relative overflow-hidden shrink-0 ${viewMode === 'list' ? 'sm:w-56 h-48 sm:h-auto' : 'h-48'
+                            {isLoading ? (
+                                <div className="flex flex-col gap-4">
+                                    {[1, 2, 3].map((i) => (
+                                        <div key={i} className="h-48 bg-slate-200 animate-pulse rounded-2xl" />
+                                    ))}
+                                </div>
+                            ) : (
+                                clinics.map((clinic) => (
+                                    <Link
+                                        key={clinic.id}
+                                        to={`/clinic/${clinic.id}`}
+                                        className={`group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-xl hover:border-[#1a2b4c]/30 transition-all duration-300 ${viewMode === 'list' ? 'flex flex-col sm:flex-row' : 'flex flex-col'
                                             }`}
                                     >
-                                        <img
-                                            src={clinic.image}
-                                            alt={clinic.name}
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                        />
-                                        {clinic.badge && (
-                                            <span className="absolute top-3 left-3 bg-[#1a2b4c] text-white text-xs font-bold px-2.5 py-1 rounded-full">
-                                                {clinic.badge}
-                                            </span>
-                                        )}
-                                        {clinic.verified && (
-                                            <span className="absolute top-3 right-3 bg-teal-500 text-white text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
-                                                <span className="material-symbols-outlined text-xs">verified</span>
-                                                Đối tác
-                                            </span>
-                                        )}
-                                    </div>
+                                        {/* Image */}
+                                        <div
+                                            className={`relative overflow-hidden shrink-0 ${viewMode === 'list' ? 'sm:w-56 h-48 sm:h-auto' : 'h-48'
+                                                }`}
+                                        >
+                                            <img
+                                                src={clinic.image}
+                                                alt={clinic.name}
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                            />
+                                            {clinic.badge && (
+                                                <span className="absolute top-3 left-3 bg-[#1a2b4c] text-white text-xs font-bold px-2.5 py-1 rounded-full">
+                                                    {clinic.badge}
+                                                </span>
+                                            )}
+                                            {clinic.verified && (
+                                                <span className="absolute top-3 right-3 bg-teal-500 text-white text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                                                    <span className="material-symbols-outlined text-xs">verified</span>
+                                                    Đối tác
+                                                </span>
+                                            )}
+                                        </div>
 
-                                    {/* Info */}
-                                    <div className="flex-1 p-5 flex flex-col gap-3">
-                                        <div>
-                                            <div className="flex items-start justify-between gap-2 mb-1">
-                                                <h3 className="font-bold text-slate-900 dark:text-slate-100 text-base leading-tight group-hover:text-[#1a2b4c] dark:group-hover:text-teal-400 transition-colors">
-                                                    {clinic.name}
-                                                </h3>
-                                                <div className="flex items-center gap-1 shrink-0 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded-lg">
-                                                    <span className="material-symbols-outlined text-amber-500 text-base">star</span>
-                                                    <span className="font-bold text-slate-800 dark:text-slate-100 text-sm">
-                                                        {clinic.rating}
-                                                    </span>
-                                                    <span className="text-slate-400 text-xs">({clinic.reviewCount})</span>
+                                        {/* Info */}
+                                        <div className="flex-1 p-5 flex flex-col gap-3">
+                                            <div>
+                                                <div className="flex items-start justify-between gap-2 mb-1">
+                                                    <h3 className="font-bold text-slate-900 dark:text-slate-100 text-base leading-tight group-hover:text-[#1a2b4c] dark:group-hover:text-teal-400 transition-colors">
+                                                        {clinic.name}
+                                                    </h3>
+                                                    <div className="flex items-center gap-1 shrink-0 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded-lg">
+                                                        <span className="material-symbols-outlined text-amber-500 text-base">star</span>
+                                                        <span className="font-bold text-slate-800 dark:text-slate-100 text-sm">
+                                                            {clinic.rating}
+                                                        </span>
+                                                        <span className="text-slate-400 text-xs">({clinic.reviewCount})</span>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-1 text-slate-500 dark:text-slate-400 text-sm">
+                                                    <span className="material-symbols-outlined text-teal-500 text-sm">location_on</span>
+                                                    <span className="truncate">{clinic.address}</span>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-1 text-slate-500 dark:text-slate-400 text-sm">
-                                                <span className="material-symbols-outlined text-teal-500 text-sm">location_on</span>
-                                                <span className="truncate">{clinic.address}</span>
+
+                                            {/* Hours & Distance */}
+                                            <div className="flex items-center gap-4 text-sm">
+                                                <span
+                                                    className={`flex items-center gap-1 font-semibold text-xs px-2 py-1 rounded-full ${clinic.isOpen
+                                                        ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
+                                                        : 'bg-slate-100 text-slate-500 dark:bg-slate-700'
+                                                        }`}
+                                                >
+                                                    <span className={`w-1.5 h-1.5 rounded-full ${clinic.isOpen ? 'bg-green-500' : 'bg-slate-400'}`} />
+                                                    {clinic.isOpen ? 'Đang mở cửa' : 'Đã đóng cửa'}
+                                                </span>
+                                                <span className="text-slate-400 text-xs">{clinic.hours}</span>
+                                                <span className="flex items-center gap-1 text-slate-400 text-xs ml-auto">
+                                                    <span className="material-symbols-outlined text-xs">near_me</span>
+                                                    {clinic.distance}
+                                                </span>
+                                            </div>
+
+                                            {/* Tags */}
+                                            <div className="flex flex-wrap gap-1.5">
+                                                {clinic.tags.map((tag) => (
+                                                    <span
+                                                        key={tag}
+                                                        className="px-2.5 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full text-xs font-medium"
+                                                    >
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+
+                                            {/* Footer */}
+                                            <div className="flex items-center justify-between mt-auto pt-3 border-t border-slate-100 dark:border-slate-700">
+                                                <span className="text-[#1a2b4c] dark:text-teal-400 font-bold text-sm">{clinic.price}</span>
+                                                <button className="px-4 py-2 bg-[#1a2b4c] text-white text-xs font-bold rounded-xl hover:bg-[#243d6b] transition-colors shadow">
+                                                    Đặt lịch ngay
+                                                </button>
                                             </div>
                                         </div>
-
-                                        {/* Hours & Distance */}
-                                        <div className="flex items-center gap-4 text-sm">
-                                            <span
-                                                className={`flex items-center gap-1 font-semibold text-xs px-2 py-1 rounded-full ${clinic.isOpen
-                                                    ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400'
-                                                    : 'bg-slate-100 text-slate-500 dark:bg-slate-700'
-                                                    }`}
-                                            >
-                                                <span className={`w-1.5 h-1.5 rounded-full ${clinic.isOpen ? 'bg-green-500' : 'bg-slate-400'}`} />
-                                                {clinic.isOpen ? 'Đang mở cửa' : 'Đã đóng cửa'}
-                                            </span>
-                                            <span className="text-slate-400 text-xs">{clinic.hours}</span>
-                                            <span className="flex items-center gap-1 text-slate-400 text-xs ml-auto">
-                                                <span className="material-symbols-outlined text-xs">near_me</span>
-                                                {clinic.distance}
-                                            </span>
-                                        </div>
-
-                                        {/* Tags */}
-                                        <div className="flex flex-wrap gap-1.5">
-                                            {clinic.tags.map((tag) => (
-                                                <span
-                                                    key={tag}
-                                                    className="px-2.5 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full text-xs font-medium"
-                                                >
-                                                    {tag}
-                                                </span>
-                                            ))}
-                                        </div>
-
-                                        {/* Footer */}
-                                        <div className="flex items-center justify-between mt-auto pt-3 border-t border-slate-100 dark:border-slate-700">
-                                            <span className="text-[#1a2b4c] dark:text-teal-400 font-bold text-sm">{clinic.price}</span>
-                                            <button className="px-4 py-2 bg-[#1a2b4c] text-white text-xs font-bold rounded-xl hover:bg-[#243d6b] transition-colors shadow">
-                                                Đặt lịch ngay
-                                            </button>
-                                        </div>
-                                    </div>
-                                </Link>
-                            ))}
+                                    </Link>
+                                ))
+                            )}
                         </div>
 
                         {/* No results */}
-                        {filtered.length === 0 && (
+                        {!isLoading && clinics.length === 0 && (
                             <div className="text-center py-20 text-slate-400">
                                 <span className="material-symbols-outlined text-6xl mb-4 block">search_off</span>
                                 <p className="font-bold text-lg text-slate-600 dark:text-slate-300">
@@ -484,7 +399,7 @@ export default function VetSearch() {
                         )}
 
                         {/* Load More */}
-                        {filtered.length > 0 && (
+                        {!isLoading && clinics.length > 0 && (
                             <div className="text-center mt-8">
                                 <button className="px-8 py-3 border-2 border-[#1a2b4c] text-[#1a2b4c] dark:text-teal-400 dark:border-teal-500 font-bold rounded-xl hover:bg-[#1a2b4c] hover:text-white transition-colors">
                                     Tải thêm kết quả

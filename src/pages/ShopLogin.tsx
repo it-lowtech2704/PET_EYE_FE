@@ -44,7 +44,7 @@ export default function ShopLogin() {
             <div className="size-24 bg-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center mx-auto mb-6">
               <Store size={48} className="text-white" />
             </div>
-            <h1 className="text-4xl font-black leading-tight mb-6">Đối tác Carevia</h1>
+            <h1 className="text-4xl font-black leading-tight mb-6">Đối tác Peteye</h1>
             <p className="text-slate-300 text-lg mb-10">
               Quản lý cửa hàng, dịch vụ và khách hàng của bạn một cách chuyên nghiệp
             </p>
@@ -95,7 +95,7 @@ export default function ShopLogin() {
                 <p className="text-sm text-red-800 font-medium">{error}</p>
                 {error.includes('chờ phê duyệt') && (
                   <p className="text-xs text-red-600 mt-1">
-                    Liên hệ: support@carevia.vn hoặc 1900-xxxx
+                    Liên hệ: support@Peteye.vn hoặc 1900-xxxx
                   </p>
                 )}
               </div>
@@ -170,3 +170,4 @@ export default function ShopLogin() {
     </div>
   );
 }
+
